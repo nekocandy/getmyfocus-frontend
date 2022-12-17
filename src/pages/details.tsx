@@ -38,7 +38,7 @@ export default function DataDashboard(props: any) {
       <div className="text-light-700">
         <h1 className="text-xl">Dashboard</h1>
 
-        <div className="pt-8 grid grid-cols-1 grid-cols-5 gap-8">
+        <div className="w-full pt-8 grid grid-cols-1 lg:grid-cols-5 place-items-center gap-8">
           <div className="col-span-4 h-[70vh]">
             <Line
               className="bg-stone-800"
@@ -69,7 +69,7 @@ export default function DataDashboard(props: any) {
             />
           </div>
 
-          <div className="w-full flex flex-col justify-center gap-5">
+          <div className="flex flex-col justify-center items-center gap-5">
             <div className="w-full bg-stone-800 rounded-md p-4">
               <h1 className="text-lg">Session Info</h1>
               <p className="text-sm">Session ID: {id}</p>
