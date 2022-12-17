@@ -6,7 +6,7 @@ import routes from "~react-pages";
 export default function App() {
   return (
     <div className="h-screen bg-[#1a1a1a]">
-      <div className="h-full max-w-7xl mx-auto">
+      <div className="h-full max-w-7xl mx-auto px-6 py-6">
         <Suspense fallback={<p>Loading...</p>}>{useRoutes(routes)}</Suspense>
       </div>
     </div>
