@@ -10,6 +10,12 @@ interface SessionCardProps {
 export default function SessionCard(props: SessionCardProps) {
   const navigate = useNavigate();
 
+  const onDetailsButtonClicked = () => {
+    const params = new URLSearchParams();
+    params.append("id", props.id);
+    navigate(`/details?${params.toString()}`);
+  };
+
   return (
     <div className="container">
       <div className="card">
@@ -23,7 +29,7 @@ export default function SessionCard(props: SessionCardProps) {
                 <li>Date</li>
               </ul>
             </p>
-            <button onClick={() => navigate(`/details/${props.id}`)}>See More</button>
+            <button onClick={onDetailsButtonClicked}>See More</button>
           </div>
         </div>
       </div>
