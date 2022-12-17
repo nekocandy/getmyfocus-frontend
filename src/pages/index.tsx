@@ -11,7 +11,7 @@ export default function HomePage() {
   } else if (isAuthenticated && user) {
     return (
       <div className="text-light-700">
-        <div className="py-4">
+        <div className="pt-1 pb-2">
           <span className="text-lg">Hi {user.name},</span>
         </div>
 
