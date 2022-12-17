@@ -6,7 +6,9 @@ export default function Navbar() {
 
   const onButtonClick = () => {
     if (isAuthenticated) {
-      logout();
+      logout({
+        returnTo: window.location.origin,
+      });
     } else {
       loginWithRedirect();
     }
