@@ -41,6 +41,17 @@ export default function DataDashboard(props: any) {
   };
 
   useEffect(() => {
+    if (!data) return;
+
+    console.log(
+      data.Focus.map((focus, index) => {
+        console.log(focus.createdAt);
+        return dayjs(focus.createdAt).format("DD/MM/YYYY HH:mm");
+      })
+    );
+  }, [data]);
+
+  useEffect(() => {
     console.log(searchParams.get("id"));
 
     fetchData();
@@ -79,13 +90,16 @@ export default function DataDashboard(props: any) {
                 },
               }}
               data={{
-                labels: data.Focus.map((focus, index) =>
+                labels: data.Focus.reverse().map((focus, index) =>
                   dayjs(focus.createdAt).format("DD/MM/YYYY HH:mm")
                 ),
                 datasets: [
                   {
                     label: "Values",
-                    data: data.Focus.map((focus, index) => index + 1),
+                    data: data.Focus.reverse().map((focus, index) => index + 1),
+                    fill: false,
+                    borderColor: "rgb(75, 192, 192)",
+                    tension: 0.1,
                   },
                 ],
               }}
