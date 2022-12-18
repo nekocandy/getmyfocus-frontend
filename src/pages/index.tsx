@@ -35,27 +35,31 @@ export default function HomePage() {
   if (isLoading) {
     return <p>Loading...</p>;
   } else if (isAuthenticated && user) {
-    return (
-      <div className="text-light-700">
-        <div className="pt-1 pb-2">
-          <span className="text-lg">Hi {user.name},</span>
-        </div>
+    if (!data || !data.length) {
+      return <p>There are no registered sessions</p>;
+    } else {
+      return (
+        <div className="text-light-700">
+          <div className="pt-1 pb-2">
+            <span className="text-lg">Hi {user.name},</span>
+          </div>
 
-        <div className="grid place-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {data.map((data, index) => (
-            <div>
-              <SessionCard
-                key={data.id}
-                index={index + 1}
-                id={data.id}
-                sessionName={data.session}
-                data={data}
-              />
-            </div>
-          ))}
+          <div className="grid place-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {data.map((data, index) => (
+              <div>
+                <SessionCard
+                  key={data.id}
+                  index={index + 1}
+                  id={data.id}
+                  sessionName={data.session}
+                  data={data}
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   } else {
     return <SignIn />;
   }
