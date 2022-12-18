@@ -13,7 +13,7 @@ export default function SignIn() {
   return (
     <div className="flex justify-center">
       <div className="login">
-        <div className="w-md form space-y-8">
+        <div className="w-xs lg:w-md form space-y-8">
           <p>
             <span className="accent"> {">"} </span> welcome
           </p>
