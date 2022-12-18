@@ -49,6 +49,7 @@ export default function HomePage() {
                 index={index + 1}
                 id={data.id}
                 sessionName={data.session}
+                data={data}
               />
             </div>
           ))}

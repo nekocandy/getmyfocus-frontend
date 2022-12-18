@@ -1,10 +1,21 @@
+import dayjs from "dayjs";
 import { useNavigate } from "react-router";
 import "./SessionCard.component.css";
+
+interface Data {
+  id: string;
+  session: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+  completedAt: any;
+}
 
 interface SessionCardProps {
   index: number;
   id: string;
   sessionName: string;
+  data: Data;
 }
 
 export default function SessionCard(props: SessionCardProps) {
@@ -25,8 +36,8 @@ export default function SessionCard(props: SessionCardProps) {
             <h3>{props.sessionName}</h3>
             <p>
               <ul>
-                <li>Duration</li>
-                <li>Date</li>
+                <li>Duration: {props.data.completedAt ?? "ongoing"}</li>
+                <li>Date: {dayjs(props.data.createdAt).format("DD/MM/YYYY")}</li>
               </ul>
             </p>
             <button onClick={onDetailsButtonClicked}>See More</button>
