@@ -1,38 +1,39 @@
+import { Chart, registerables } from "chart.js";
+import "chartjs-adapter-date-fns";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { useSearchParams } from "react-router-dom";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+Chart.register(...registerables);
+
+export interface ApiData {
+  id: string;
+  session: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+  completedAt: any;
+  Focus: Focus[];
+}
+
+export interface Focus {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  email: string;
+  sessionId: string;
+}
 
 export default function DataDashboard(props: any) {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<ApiData | null>(null);
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
 
   const fetchData = async () => {
     setLoading(true);
-    const response = await fetch(
-      `https://api.trackmyfocus.co/data/sessions/${id}`
-    );
+    const response = await fetch(`https://api.trackmyfocus.co/data/data/${id}`);
     const data = await response.json();
     console.log(data);
     setData(data);
@@ -41,36 +42,51 @@ export default function DataDashboard(props: any) {
 
   useEffect(() => {
     console.log(searchParams.get("id"));
+
+    fetchData();
   }, [searchParams]);
 
   if (loading) {
     return <span className="text-light-700">Loading...</span>;
+  } else if (!data) {
+    return <span className="text-light-700">Data not found...</span>;
   } else {
     return (
       <div className="text-light-700">
         <h1 className="text-xl">Dashboard</h1>
 
         <div className="w-full pt-8 grid grid-cols-1 lg:grid-cols-5 place-items-center gap-8">
-          <div className="col-span-4 lg:h-[70vh]">
+          <div className="w-full col-span-4 h-[70vh]">
             <Line
-              className="bg-stone-800"
+              className="h-full w-full bg-stone-800"
               options={{
                 responsive: true,
                 maintainAspectRatio: true,
                 scales: {
+                  y: {
+                    display: true,
+                  },
                   x: {
-                      type: 'timeseries',
-                  }
-              }
+                    type: "timeseries",
+                    display: true,
+                    time: {
+                      parser: "dd/MM/yyyy HH:mm",
+                      unit: "hour",
+                      displayFormats: {
+                        hour: "dd/MM/yyyy HH:mm",
+                      },
+                    },
+                  },
+                },
               }}
               data={{
+                labels: data.Focus.map((focus, index) =>
+                  dayjs(focus.createdAt).format("dd/MM/YYYY HH:mm")
+                ),
                 datasets: [
                   {
-                    label: "My First Dataset",
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    borderColor: "rgb(75, 192, 192)",
-                    tension: 0.1,
+                    label: "Values",
+                    data: data.Focus.map((focus, index) => index + 1),
                   },
                 ],
               }}
@@ -81,16 +97,22 @@ export default function DataDashboard(props: any) {
             <div className="w-full bg-stone-800 rounded-md p-4">
               <h1 className="text-lg">Session Info</h1>
               <p className="text-sm">Session ID: {id}</p>
-              <p className="text-sm">Session Name: Hello</p>
-              <p className="text-sm">Session Date: 18/12/2002</p>
-              <p className="text-sm">Session Time: 12:00-14:00</p>
+              <p className="text-sm">Session Name: {data.session}</p>
+              <p className="text-sm">
+                Session Date: {dayjs(data.createdAt).format("DD/MM/YYYY")}
+              </p>
+              <p className="text-sm">
+                Session Time: {dayjs(data.createdAt).format("HH:MM")}
+              </p>
             </div>
 
             <div className="w-full bg-stone-800 rounded-md p-4">
               <h1 className="text-lg">Session Analytics</h1>
               <p className="text-sm">Session ID: {id}</p>
-              <p className="text-sm">Distractions: 12</p>
-              <p className="text-sm">Session Duration: 2H</p>
+              <p className="text-sm">Distractions: {data.Focus.length}</p>
+              <p className="text-sm">
+                Session Duration: {data.completedAt ? "2H" : "ongoing"}
+              </p>
             </div>
           </div>
         </div>
