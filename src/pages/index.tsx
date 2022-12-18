@@ -1,9 +1,27 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect, useState } from "react";
 import SessionCard from "../components/SessionCard/SessionCard";
 import SignIn from "../components/SignIn/SignIn";
 
 export default function HomePage() {
+  const [data, setData] = useState([]);
   const { user, isAuthenticated, isLoading } = useAuth0();
+
+  const fetchData = async () => {
+    const response = await fetch(
+      `http://localhost:2047/data/sessions/${user?.email!!}`
+    );
+
+    const data = await response.json();
+    console.log(data);
+  };
+
+  useEffect(() => {
+    if (isLoading) return;
+    if (!isAuthenticated) return;
+
+    fetchData();
+  }, [isLoading]);
 
   if (isLoading) {
     return <p>Loading...</p>;
