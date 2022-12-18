@@ -1,7 +1,9 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
+import { useNavigate } from "react-router";
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const { logout, loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
 
   const onButtonClick = () => {
@@ -17,7 +19,7 @@ export default function Navbar() {
   return (
     <nav className="border-b border-stone-700 text-gray-300 py-5 px-8">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <div className="flex items-end">
+        <div onClick={() => navigate("/")} className="cursor-pointer flex items-end">
           <img src="/tmf.svg" alt="logo" className="h-7 w-7 rounded-full" />
           <span className="text-lg font-bold ml-2">TrackMyFocus</span>
         </div>
