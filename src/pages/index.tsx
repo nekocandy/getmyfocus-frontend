@@ -9,7 +9,7 @@ export default function HomePage() {
 
   const fetchData = async () => {
     const response = await fetch(
-      `http://localhost:2047/data/sessions/${user?.email!!}`
+      `https://api.trackmyfocus.co/data/sessions/${user?.email!!}`
     );
 
     const data = await response.json();

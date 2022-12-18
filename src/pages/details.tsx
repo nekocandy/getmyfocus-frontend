@@ -23,9 +23,21 @@ ChartJS.register(
 );
 
 export default function DataDashboard(props: any) {
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
+
+  const fetchData = async () => {
+    setLoading(true);
+    const response = await fetch(
+      `https://api.trackmyfocus.co/data/sessions/${id}`
+    );
+    const data = await response.json();
+    console.log(data);
+    setData(data);
+    setLoading(false);
+  };
 
   useEffect(() => {
     console.log(searchParams.get("id"));
@@ -39,23 +51,19 @@ export default function DataDashboard(props: any) {
         <h1 className="text-xl">Dashboard</h1>
 
         <div className="w-full pt-8 grid grid-cols-1 lg:grid-cols-5 place-items-center gap-8">
-          <div className="col-span-4 h-[70vh]">
+          <div className="col-span-4 lg:h-[70vh]">
             <Line
               className="bg-stone-800"
               options={{
                 responsive: true,
                 maintainAspectRatio: true,
+                scales: {
+                  x: {
+                      type: 'timeseries',
+                  }
+              }
               }}
               data={{
-                labels: [
-                  "January",
-                  "February",
-                  "March",
-                  "April",
-                  "May",
-                  "June",
-                  "July",
-                ],
                 datasets: [
                   {
                     label: "My First Dataset",

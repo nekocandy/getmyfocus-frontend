@@ -7,7 +7,7 @@ export default function GetToken() {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   const fetchToken = async () => {
-    const res = await fetch("http://localhost:2047/createToken", {
+    const res = await fetch("https://api.trackmyfocus.co/createToken", {
       method: "POST",
       body: JSON.stringify({
         email: user?.email,
