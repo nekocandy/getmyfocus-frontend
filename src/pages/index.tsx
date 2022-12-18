@@ -3,8 +3,17 @@ import { useEffect, useState } from "react";
 import SessionCard from "../components/SessionCard/SessionCard";
 import SignIn from "../components/SignIn/SignIn";
 
+export interface Data {
+  id: string;
+  session: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+  completedAt: any;
+}
+
 export default function HomePage() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Data[]>([]);
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   const fetchData = async () => {
@@ -12,8 +21,8 @@ export default function HomePage() {
       `https://api.trackmyfocus.co/data/sessions/${user?.email!!}`
     );
 
-    const data = await response.json();
-    console.log(data);
+    const localData = await response.json();
+    setData(localData);
   };
 
   useEffect(() => {
@@ -33,13 +42,13 @@ export default function HomePage() {
         </div>
 
         <div className="grid place-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {new Array(10).fill(0).map((_, index) => (
+          {data.map((data, index) => (
             <div>
               <SessionCard
-                key={index}
+                key={data.id}
                 index={index + 1}
-                id={index.toString()}
-                sessionName="Hello"
+                id={data.id}
+                sessionName={data.session}
               />
             </div>
           ))}
