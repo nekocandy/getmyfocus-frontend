@@ -71,7 +71,6 @@ export default function DataDashboard(props: any) {
                     display: true,
                     time: {
                       parser: "dd/MM/yyyy HH:mm",
-                      unit: "hour",
                       displayFormats: {
                         hour: "dd/MM/yyyy HH:mm",
                       },
@@ -81,7 +80,7 @@ export default function DataDashboard(props: any) {
               }}
               data={{
                 labels: data.Focus.map((focus, index) =>
-                  dayjs(focus.createdAt).format("dd/MM/YYYY HH:mm")
+                  dayjs(focus.createdAt).format("DD/MM/YYYY HH:mm")
                 ),
                 datasets: [
                   {
